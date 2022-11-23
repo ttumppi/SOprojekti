@@ -13,11 +13,12 @@ class Boardgame(models.Model):
 
 class Boardgamer(models.Model):
     """Gamer validaattoreilla"""
+    boardgames = models.ForeignKey(Boardgame, on_delete=models.CASCADE)
     nimi = models.CharField(max_length=20, default='')
     varaukset = models.IntegerField(
         default=0,
         validators=[MaxValueValidator(3),
-        MinValueValidator(1)
+        MinValueValidator(0)
         ]
     )
 
