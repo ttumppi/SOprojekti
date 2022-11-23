@@ -1,0 +1,10 @@
+{% extends "board_games/homepage.html" %} 
+{% block content %}
+<ul>
+    {% for boardgame in boardgames %} 
+        <li>{{ boardgame }}</li>
+    {% empty %}
+        <p>No boardgames added</p>
+    {% endfor %}
+</ul>
+{% endblock content %} 
