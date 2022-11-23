@@ -12,7 +12,7 @@ class Boardgame(models.Model):
         return self.nimi
 
 class Boardgamer(models.Model):
-    """Gamer"""
+    """Gamer validaattoreilla"""
     nimi = models.CharField(max_length=20, default='')
     varaukset = models.IntegerField(
         default=0,
