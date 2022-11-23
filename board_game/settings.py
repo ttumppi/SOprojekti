@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+"""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"""
 
 from pathlib import Path
 
