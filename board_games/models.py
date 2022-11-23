@@ -4,7 +4,8 @@ from django.db import models
 
 class Boardgame(models.Model):
     """A boardgame"""
+    nimi = models.CharField(max_length=20, default='')
     selitys = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.selitys
+        return self.nimi
