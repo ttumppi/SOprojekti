@@ -17,7 +17,7 @@ class Boardgamer(models.Model):
     varaukset = models.IntegerField(
         default=0,
         validators=[MaxValueValidator(3),
-        MinValueValidator(1)
+        MinValueValidator(0)
         ]
     )
 

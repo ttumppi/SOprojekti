@@ -9,3 +9,9 @@ def boardgames(request):
     boardgame = Boardgame.objects.all()
     dict = {'boardgames':boardgame}
     return render(request, "board_games/boardgames.html", dict)
+
+def boardgame(request, boardgame_id):
+    """Show a single boardgame and its details"""
+    boardgame = Boardgame.objects.get(id=boardgame_id)
+    context = {'boardgame': boardgame}
+    return render(request, 'board_games/boardgame.html', context)
