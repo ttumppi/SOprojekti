@@ -9,3 +9,11 @@ class Boardgame(models.Model):
 
     def __str__(self):
         return self.nimi
+
+class Boardgamer(models.Model):
+    """Gamer"""
+    nimi = models.CharField(max_length=20, default='')
+    varaukset = models.IntegerField()
+
+    def __str__(self):
+        return self.nimi
