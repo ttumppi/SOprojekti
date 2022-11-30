@@ -1,0 +1,13 @@
+{% extends 'board_games/homepage.html' %}
+
+{% block content %}
+
+    <form method='post' action="{% url 'board_games:register' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+    <button name="submit">Register</button>
+    <input type="hidden" name="next" value="{% url 'board_games:homepage' %}" />
+</form>
+
+{% endblock content %}
