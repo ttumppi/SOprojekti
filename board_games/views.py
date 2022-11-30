@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import BoardgamerForm
 from .forms import PasswordsForm
 from .forms import Login_Form
+from .forms import BoardgameForm
 from django.forms.formsets import formset_factory
 from .models import Boardgamer
 from .models import Passwords
