@@ -1,0 +1,13 @@
+{% extends "board_games/homepage.html" %} 
+{% block content %}
+<ul>
+    {% for peli in pelit %}
+        <li> {{ peli }} <form method='post' action="{% url 'board_games:returning' peli.id %}">
+            {% csrf_token %}
+            <button type='submit'>Return</button> 
+        </li>
+    {% empty %}
+        <p> No loans </p>
+    {% endfor %}
+<ul>
+{% endblock content %} 
