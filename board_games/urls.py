@@ -15,4 +15,6 @@ urlpatterns = [
     #path('succesful/', views.succesful, name='succesful'),
     path('log_out/', views.log_out, name='log_out'),
     path('loans/', views.loans, name='loans'),
+    #Uuden boardgamen luonti
+    path('new_boardgame/,´', views.new_boardgame, name='new_boardgame')
 ]

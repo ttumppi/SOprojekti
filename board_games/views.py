@@ -36,6 +36,17 @@ def boardgame(request, boardgame_id):
 
     return render(request, 'board_games/boardgame.html', dict)
 
+def new_boardgame(request):
+    if request.method != 'POST':
+        form = BoardgameForm()
+    else:
+        form = BoardgameForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('board_games/new_boardgame.html', context)
+    context = {'form': form}
+    return render(request, 'board_games/new_boardgame.html', context)
+
 def register(request):
     if request.method == 'POST':
         form = BoardgamerForm(request.POST)
