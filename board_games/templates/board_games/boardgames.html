@@ -2,7 +2,8 @@
 {% block content %}
 <ul>
     {% for boardgame in boardgames %} 
-        <li>{{ boardgame }}</li>
+        <li> <a href="{% url 'board_games:boardgame' boardgame.id %}">{{ boardgame }}</a>
+        </li>
     {% empty %}
         <p>No boardgames added</p>
     {% endfor %}

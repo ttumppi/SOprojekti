@@ -1,7 +1,11 @@
 <p> Boardgame loan service</p>
 <a href="{% url 'board_games:homepage' %}">|Homepage|</a>
 <a href="{% url 'board_games:boardgames' %}">|Boardgames|</a>
+<a href="{% url 'board_games:register' %}">|Register|</a>
+<a href="{% url 'board_games:log_in' %}">|Log in|</a>
+<a href="{% url 'board_games:log_out' %}">|Log out|</a>
+<a href="{% url 'board_games:loans' %}">|Loaned games|</a>
 
 {% block content %}
-
+<p> Homepage </p>
 {% endblock content %}

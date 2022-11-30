@@ -1,0 +1,10 @@
+{% extends 'board_games/homepage.html' %}
+
+{% block content %}
+
+<p>{{ boardgame }}</p>
+<form action="{% url 'board_games:boardgame' boardgame_id %}" method='post'>
+    {% csrf_token %}
+    <button name="submit">Loan</button>
+</form>
+{% endblock content %}
