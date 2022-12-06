@@ -19,6 +19,7 @@ def homepage(request):
         user = True
         dict = {'user':user, 'boardgamer':boardgamer}
         return render(request, "board_games/homepage.html", dict)
+    return render(request, "board_games/homepage.html")
 
 #List of all boardgames
 def boardgames(request):
@@ -26,7 +27,10 @@ def boardgames(request):
         if authentication(request.session.get('user')) == False:
             return redirect('board_games:error')
     boardgame = Boardgame.objects.all()
-    dict = {'boardgames':boardgame}
+    dict = user_object(request.session.get('user'))
+    boardgamer = dict.get('user_object')
+    user = dict.get('user')
+    dict = {'boardgames':boardgame, 'user':user, 'boardgamer':boardgamer}
     return render(request, "board_games/boardgames.html", dict)
 
 def boardgame(request, boardgame_id):
@@ -36,10 +40,8 @@ def boardgame(request, boardgame_id):
     """Show a single boardgame and its details"""
     is_loaned = False
     boardgame = Boardgame.objects.get(id=boardgame_id)
-    dict = {'boardgame_id':boardgame_id, 'boardgame':boardgame, 'is_loaned':is_loaned}
     if request.method == 'POST':
         if 'user' in request.session:
-            print (2)
             boardgamer = Boardgamer.objects.get(id = request.session['user'])
             if boardgame.boardgamer == boardgamer:
                 return redirect('board_games:error')
@@ -53,7 +55,10 @@ def boardgame(request, boardgame_id):
             boardgamer.save()
             boardgame.save()
             is_loaned = True
-            dict = {'boardgame_id':boardgame_id, 'boardgame':boardgame, 'is_loaned':is_loaned}
+            dict = user_object(request.session.get('user'))
+            boardgamer = dict.get('user_object')
+            user = dict.get('user')
+            dict = {'boardgame_id':boardgame_id, 'boardgame':boardgame, 'is_loaned':is_loaned, 'boardgamer':boardgamer, 'user':user}
             return render(request, 'board_games/boardgame.html', dict)
         else:
             return redirect('board_games:error')
@@ -61,7 +66,10 @@ def boardgame(request, boardgame_id):
     if boardgame.boardgamer != None and request.session['edited'] == False:
         gamer = Boardgamer.objects.get(id=boardgame.boardgamer.id)
         is_loaned = True
-        dict = {'boardgame_id':boardgame_id, 'boardgame':boardgame, 'is_loaned':is_loaned, 'gamer':gamer}
+        dict = user_object(request.session.get('user'))
+        boardgamer = dict.get('user_object')
+        user = dict.get('user')
+        dict = {'boardgame_id':boardgame_id, 'boardgame':boardgame, 'is_loaned':is_loaned, 'gamer':gamer, 'boardgamer':boardgamer, 'user':user}
         return render(request, 'board_games/boardgame.html', dict)
 
     if request.session['edited'] == True:
@@ -69,8 +77,15 @@ def boardgame(request, boardgame_id):
         boardgame.edit_date = datetime.now()
         boardgame.save()
         is_loaned = False
-        dict = {"True":True, 'boardgame':boardgame, 'is_loaned':is_loaned}
+        dict = user_object(request.session.get('user'))
+        boardgamer = dict.get('user_object')
+        user = dict.get('user')
+        dict = {"True":True, 'boardgame':boardgame, 'is_loaned':is_loaned, 'boardgamer':boardgamer, 'user':user}
         return render(request, "board_games/boardgame.html", dict)
+    dict = user_object(request.session.get('user'))
+    boardgamer = dict.get('user_object')
+    user = dict.get('user')
+    dict = {'boardgame':boardgame, 'user':user, 'boardgamer':boardgamer, 'is_loaned':is_loaned}
     return render(request, 'board_games/boardgame.html', dict)
 
 def register(request):
@@ -118,15 +133,7 @@ def log_in(request):
 def error(request):
     return render(request, 'board_games/error.html')
 
-# def succesful(request):
-#     user_object = request.session['user']
-#     user = Boardgamer.objects.get(id=user_object)
-#     username = User_Info()
-#     username.username = user.nimi
-#     username.gamer_id = request.user.id
-#     username.save()
-#     dict = {'nimi':user.nimi}
-#     return render(request, 'board_games/succesful.html', dict)
+
 
 def log_out(request):
     if 'user' in request.session:
@@ -144,7 +151,10 @@ def loans(request):
     if 'user' in request.session:
         pelaaja = Boardgamer.objects.get(id=request.session['user'])
         pelit = pelaaja.boardgame_set.all()
-        dict = {'pelit':pelit}
+        dict = user_object(request.session.get('user'))
+        boardgamer = dict.get('user_object')
+        user = dict.get('user')
+        dict = {'pelit':pelit, 'boardgamer':boardgamer, 'user':user}
         return render(request, "board_games/loans.html", dict)
     return redirect('board_games:error')
 
@@ -177,7 +187,10 @@ def new_boardgame(request):
                     boardgame.loan_date = datetime.now()
                     boardgame.save()
                     return redirect('board_games:boardgames')
-    context = {'form': form}
+    dict = user_object(request.session.get('user'))
+    boardgamer = dict.get('user_object')
+    user = dict.get('user')                
+    context = {'form': form, 'boardgamer':boardgamer, 'user':user}
     return render(request, 'board_games/new_boardgame.html', context)
 
 def edit_boardgame(request, boardgame_id):
@@ -197,7 +210,10 @@ def edit_boardgame(request, boardgame_id):
             return redirect('board_games:boardgame', boardgame_id)
     else:
         form = BoardgameForm()
-        dict = {'boardgame':boardgame, 'boardgame_id':boardgame_id, 'form':form}
+        dict = user_object(request.session.get('user'))
+        boardgamer = dict.get('user_object')
+        user = dict.get('user')
+        dict = {'boardgame':boardgame, 'boardgame_id':boardgame_id, 'form':form, 'boardgamer':boardgamer, 'user':user}
         return render(request, "board_games/edit_boardgame.html", dict)
 
 def delete_boardgame(request, boardgame_id):
@@ -211,17 +227,27 @@ def delete_boardgame(request, boardgame_id):
 def authentication(session):
     for i in Boardgamer.objects.all():
         if i.id == session:
-            return True
-        else:
-            return False
+            return True 
+    return False
+def user_object(user_id):
+    for i in Boardgamer.objects.all():
+        if i.id == user_id:
+            dict = {'user_object':i, 'user':True}
+            return dict
 def created_games(request, gamer_id):
      if 'user' in request.session:
         if authentication(request.session.get('user')) == False:
             return redirect('board_games:error')
         else:
+            boardgames = []
             gamer = Boardgamer.objects.get(id=gamer_id)
-            boardgames = gamer.boardgame_set.all()
-            dict = {'boardgames':boardgames}
+            for i in Boardgame.objects.all():
+                if i.owner == gamer:
+                    boardgames.append(i)
+            dict = user_object(request.session.get('user'))
+            boardgamer = dict.get('user_object')
+            user = dict.get('user')
+            dict = {'boardgames':boardgames, 'boardgamer':boardgamer, 'user':user}
             return render(request, "board_games/created_games.html", dict)
 
 

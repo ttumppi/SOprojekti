@@ -2,8 +2,7 @@
 
 {% block content %}
 <ul>
-    <li> {{ boardgame }} <a href="{% url 'board_games:edit_boardgame' boardgame.id %}">|Edit boardgame|</a> 
-        <a href="{% url 'board_games:delete_boardgame' boardgame.id %}">|Delete boardgame|</a> </li>
+    <li> {{ boardgame }} </li>
     <p> Selitys:  {{ boardgame.selitys }} </p>
     <p> Luontipvm: {{ boardgame.date }} </p>
 </ul>

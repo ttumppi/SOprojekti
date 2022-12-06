@@ -7,7 +7,7 @@ from django import forms
 class BoardgamerForm(ModelForm):
     class Meta:
         model = Boardgamer
-        fields = ['nimi', 'varaukset']
+        fields = ['nimi']
 
 class PasswordsForm(ModelForm):
     class Meta:
