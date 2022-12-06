@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from passlib.hash import pbkdf2_sha256
 
 # Create your models here.
 
@@ -29,6 +30,9 @@ class Passwords(models.Model):
     salasana = models.CharField(max_length=20)
     username = models.OneToOneField(Boardgamer, 
     on_delete=models.CASCADE, primary_key=True)
+    
+    def verify_password(self, raw_salasana):
+        return pbkdf2_sha256.verify(raw_salasana, self.salasana)
 
 # class User_Info(models.Model):
 #     username = models.CharField(max_length=20)

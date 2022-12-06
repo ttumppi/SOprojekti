@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from .forms import BoardgamerForm
 from .forms import PasswordsForm
 from .forms import Login_Form
@@ -6,6 +6,7 @@ from .forms import BoardgameForm
 from django.forms.formsets import formset_factory
 from .models import Boardgamer
 from .models import Passwords
+from passlib.hash import pbkdf2_sha256
 #from .models import User_Info
 
 from .models import Boardgame
@@ -52,13 +53,17 @@ def register(request):
     if request.method == 'POST':
         form = BoardgamerForm(request.POST)
         form_password = PasswordsForm(request.POST)
+        enc_form_password = pbkdf2_sha256.encrypt(form_password,rounds=12000,salt_size=32)
 
         if form.is_valid() and form_password.is_valid():
             form_object = form.save(commit=False)
-            form_password_object = form_password.save(commit=False)
+            form_password_object = enc_form_password.save(commit=False)
             form_password_object.username = form_object
             form_object.save()
             form_password_object.save()
+
+
+            
             return redirect('board_games:homepage')
     else:
         form = BoardgamerForm()
