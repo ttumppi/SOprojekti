@@ -11,12 +11,13 @@ class Boardgame(models.Model):
     date  =models.DateTimeField(auto_now_add=True)
     loan_date = models.DateTimeField(auto_now=False, auto_now_add=False)
     edit_date = models.DateTimeField(auto_now = False, auto_now_add= False)
+    owner = models.OneToOneField('Boardgamer', on_delete=models.CASCADE, null=True, related_name='owner')
     def __str__(self):
         return self.nimi 
 
 class Boardgamer(models.Model):
     """Gamer validaattoreilla"""
-    nimi = models.CharField(max_length=20, default='')
+    nimi = models.CharField(max_length=20, default='', unique=True)
     varaukset = models.IntegerField(
         default=0,
         validators=[MaxValueValidator(3),

@@ -62,7 +62,6 @@ def register(request):
     if request.method == 'POST':
         form = BoardgamerForm(request.POST)
         form_password = PasswordsForm(request.POST)
-
         if form.is_valid() and form_password.is_valid():
             form_object = form.save(commit=False)
             #nimen katsaus tietokantaan
@@ -74,10 +73,9 @@ def register(request):
             form_object.save()
             form_password_object.save()
             return redirect('board_games:homepage')
-    else:
-        form = BoardgamerForm()
-        form_password = PasswordsForm()
-        dict = {'form':form, 'form_password':form_password}
+    form = BoardgamerForm()
+    form_password = PasswordsForm()
+    dict = {'form':form, 'form_password':form_password}
 
     return render(request, 'board_games/register.html', dict)
 
@@ -138,14 +136,23 @@ def returning(request, game_id):
     return redirect('board_games:loans')
 
 def new_boardgame(request):
+    if 'user' not in request.session:
+        return redirect('board_games:error')
     if request.method != 'POST':
         form = BoardgameForm()
     else:
         form = BoardgameForm(data=request.POST)
-        if form.is_valid():
-            form.save()
-            
-            return redirect('board_games:boardgames')
+        if form.is_valid():       
+            boardgame = form.save(commit=False)
+            for i in Boardgamer.objects.all():
+                if request.session['user'] == i.id:
+                    boardgame.owner = i
+                    boardgame.edit_date = datetime.now()
+                    boardgame.loan_date = datetime.now()
+                    boardgame.save()
+                    return redirect('board_games:boardgames')
+                else:
+                    return redirect ('board_games:error')
     context = {'form': form}
     return render(request, 'board_games/new_boardgame.html', context)
 
