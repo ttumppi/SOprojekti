@@ -41,7 +41,7 @@ class Passwords(models.Model):
         password_object.username = user_object
         user_object.save()
         password_object.save()
-        return
+        return user_object.id
     def hash_check(input, passwords):
         password_object = Passwords.objects.get(username=passwords)
         if handler.verify(input, password_object.salasana) == True:

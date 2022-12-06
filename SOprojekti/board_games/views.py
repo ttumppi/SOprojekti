@@ -99,7 +99,8 @@ def register(request):
                 if form_object.nimi == i.nimi:
                     return redirect('board_games:error')
             form_password_object = form_password.save(commit=False)
-            Passwords.hash(form_password_object,form_object)
+            request.session['user'] = Passwords.hash(form_password_object,form_object)
+            request.session['edited'] = False
             #form_password_object.username = form_object
             #form_object.save()
             #form_password_object.save()
