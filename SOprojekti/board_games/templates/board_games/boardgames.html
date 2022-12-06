@@ -1,0 +1,12 @@
+{% extends "board_games/homepage.html" %} 
+{% block content %}
+<ul>
+    {% for boardgame in boardgames %} 
+        <li> <a href="{% url 'board_games:boardgame' boardgame.id %}">{{ boardgame }}</a>
+        </li>
+    {% empty %}
+        <p>No boardgames added</p>
+    {% endfor %}
+</ul>
+<a href="{% url 'board_games:new_boardgame' %}">Add a new boardgame</a>
+{% endblock content %} 
