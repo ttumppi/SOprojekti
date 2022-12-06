@@ -1,10 +1,20 @@
 <p> Boardgame loan service</p>
-<a href="{% url 'board_games:homepage' %}">|Homepage|</a>
-<a href="{% url 'board_games:boardgames' %}">|Boardgames|</a>
-<a href="{% url 'board_games:register' %}">|Register|</a>
-<a href="{% url 'board_games:log_in' %}">|Log in|</a>
-<a href="{% url 'board_games:log_out' %}">|Log out|</a>
-<a href="{% url 'board_games:loans' %}">|Loaned games|</a>
+{% if user == True %}
+    <ul>
+        <p>
+        <a href="{% url 'board_games:homepage' %}">|Homepage|</a>
+        <a href="{% url 'board_games:boardgames' %}">|Boardgames|</a>
+        <a href="{% url 'board_games:log_out' %}">|Log out|</a>
+        <a href="{% url 'board_games:loans' %}">|Loaned games|</a> Hei, <a href="{% url 'board_games:created_games' boardgamer.id %}">{{ boardgamer.nimi }} </a>
+        </p>
+    </ul>
+{% else %} 
+    <a href="{% url 'board_games:homepage' %}">|Homepage|</a>
+    <a href="{% url 'board_games:register' %}">|Register|</a>
+    <a href="{% url 'board_games:log_in' %}">|Log in|</a>
+{% endif %} 
+
+
 
 
 {% block content %}

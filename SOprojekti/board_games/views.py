@@ -10,7 +10,15 @@ from datetime import datetime
 
 from .models import Boardgame
 def homepage(request):
-    return render(request, "board_games/homepage.html")
+    if 'user' in request.session:
+        if authentication(request.session.get('user')) == False:
+            user = False
+            dict = {'user':user}
+            return render(request, "board_games/homepage.html", dict)
+        boardgamer = Boardgamer.objects.get(id=request.session['user'])
+        user = True
+        dict = {'user':user, 'boardgamer':boardgamer}
+        return render(request, "board_games/homepage.html", dict)
 
 #List of all boardgames
 def boardgames(request):
@@ -99,7 +107,8 @@ def log_in(request):
                     if form.cleaned_data['password'] == password_object.salasana:
                         request.session['user'] = user.id
                         request.session['edited'] = False
-                        return render(request, 'board_games/succesful.html')  
+                        #return render(request, 'board_games/succesful.html')
+                        return redirect('board_games:homepage')  
             return redirect('board_games:error')
     else:
         form = Login_Form()
@@ -205,5 +214,15 @@ def authentication(session):
             return True
         else:
             return False
+def created_games(request, gamer_id):
+     if 'user' in request.session:
+        if authentication(request.session.get('user')) == False:
+            return redirect('board_games:error')
+        else:
+            gamer = Boardgamer.objects.get(id=gamer_id)
+            boardgames = gamer.boardgame_set.all()
+            dict = {'boardgames':boardgames}
+            return render(request, "board_games/created_games.html", dict)
+
 
 
