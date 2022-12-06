@@ -7,6 +7,8 @@ from django.forms.formsets import formset_factory
 from .models import Boardgamer
 from .models import Passwords
 from passlib.hash import pbkdf2_sha256
+from django.contrib.auth.decorators import login_required
+
 #from .models import User_Info
 
 from .models import Boardgame
@@ -19,6 +21,7 @@ def boardgames(request):
     dict = {'boardgames':boardgame}
     return render(request, "board_games/boardgames.html", dict)
 
+@login_required
 def boardgame(request, boardgame_id):
     """Show a single boardgame and its details"""
     boardgame = Boardgame.objects.get(id=boardgame_id)
@@ -38,6 +41,7 @@ def boardgame(request, boardgame_id):
 
     return render(request, 'board_games/boardgame.html', dict)
 
+@login_required
 def new_boardgame(request):
     if request.method != 'POST':
         form = BoardgameForm()
@@ -91,8 +95,15 @@ def log_in(request):
         dict = {'form':form}
     return render(request, 'board_games/log_in.html', dict)
 
+
+
+
+
 def error(request):
     return render(request, 'board_games/error.html')
+
+
+    
 
 # def succesful(request):
 #     user_object = request.session['user']
@@ -110,6 +121,8 @@ def log_out(request):
     request.session.flush()
     return render(request, 'board_games/log_out.html')
 
+
+@login_required
 def loans(request):
     if 'user' in request.session:
 
