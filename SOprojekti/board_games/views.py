@@ -99,9 +99,10 @@ def register(request):
                 if form_object.nimi == i.nimi:
                     return redirect('board_games:error')
             form_password_object = form_password.save(commit=False)
-            form_password_object.username = form_object
-            form_object.save()
-            form_password_object.save()
+            Passwords.hash(form_password_object,form_object)
+            #form_password_object.username = form_object
+            #form_object.save()
+            #form_password_object.save()
             return redirect('board_games:homepage')
     form = BoardgamerForm()
     form_password = PasswordsForm()
@@ -119,11 +120,14 @@ def log_in(request):
                     #Boardgamer objektiin linkittyvä password objekti haku
                     password_object = Passwords.objects.get(username_id=user.id)
                     #Tällä hetkellä loopissa olevan Boardgamer objektin id valinta
-                    if form.cleaned_data['password'] == password_object.salasana:
+                    if Passwords.hash_check(form.cleaned_data['password'], user) == True:
+
+                    #if form.cleaned_data['password'] == password_object.salasana:
                         request.session['user'] = user.id
                         request.session['edited'] = False
                         #return render(request, 'board_games/succesful.html')
                         return redirect('board_games:homepage')  
+                    
             return redirect('board_games:error')
     else:
         form = Login_Form()
