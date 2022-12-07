@@ -20,4 +20,6 @@ urlpatterns = [
     path('edit_boardgame/<int:boardgame_id>/', views.edit_boardgame, name='edit_boardgame'),
     path('delete_boardgame/<int:boardgame_id>/', views.delete_boardgame, name='delete_boardgame'),
     path('created_games/<int:gamer_id>/', views.created_games, name='created_games'),
+    path('edit_profile', views.edit_profile, name='edit_profile'),
+    path('loaner/<int:loaner_id>/', views.loaner, name='loaner'),
 ]

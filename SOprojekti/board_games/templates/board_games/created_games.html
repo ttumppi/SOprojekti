@@ -1,9 +1,14 @@
 {% extends "board_games/homepage.html" %} 
 {% block content %}
+<p> Your Bio: </p>
+{{ boardgamer.bio }}
+<p>puh:</p>
+{{ boardgamer.puh }}
+
 {% for boardgame in boardgames %}
     <ul>
         <p>Games added by you:</p>
-        <li><a href="{% url 'board_games:boardgame' boardgame.id %}"> {{ boardgame }} </a> 
+        <a href="{% url 'board_games:boardgame' boardgame.id %}"> {{ boardgame }} </a> 
         <a href="{% url 'board_games:edit_boardgame' boardgame.id %}">|Edit boardgame|</a>
         <a href="{% url 'board_games:delete_boardgame' boardgame.id %}">|Delete boardgame|</a>
         </li>
@@ -11,5 +16,5 @@
 {% empty %}
     <p> You have not added any boardgames </p>
 {% endfor %} 
-
+<a href="{% url 'board_games:edit_profile' %}">|Edit your profile| </a>
 {% endblock content %}

@@ -18,13 +18,15 @@ class Boardgame(models.Model):
 
 class Boardgamer(models.Model):
     """Gamer validaattoreilla"""
-    nimi = models.CharField(max_length=20, default='', unique=True)
+    nimi = models.CharField(max_length=20, default='')
     varaukset = models.IntegerField(
         default=0,
         validators=[MaxValueValidator(3),
         MinValueValidator(0)
         ]
     )
+    bio = models.CharField(max_length=50)
+    puh = models.IntegerField(default=0)
 
     def __str__(self):
         return self.nimi

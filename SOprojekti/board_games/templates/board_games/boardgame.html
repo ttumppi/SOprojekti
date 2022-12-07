@@ -17,7 +17,7 @@
 {% else %}
     {{ boardgame.loan_date|date:'M d, Y H:i' }}
     <p> This game is currently being loaned by: </p>
-    {{ boardgame.boardgamer }} 
+    <a href="{% url 'board_games:loaner' boardgame.boardgamer.id %}">{{ boardgame.boardgamer }}</a> 
 {% endif %}
 <p> Last edited : </p>
 {{ boardgame.edit_date|date:'M d, Y H:i' }}

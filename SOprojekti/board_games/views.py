@@ -48,7 +48,11 @@ def boardgame(request, boardgame_id):
             #print (boardgamer.varaukset)
             #boardgamer.varaukset = 0
             if boardgamer.varaukset == 3:
-                return redirect('board_games:error')
+                dict = user_object(request.session.get('user'))
+                boardgamer = dict.get('user_object')
+                user = dict.get('user')
+                dict = {'boardgamer':boardgamer, 'user':user}
+                return render(request, "board_games/Loan_error.html", dict)
             boardgame.boardgamer = boardgamer
             boardgamer.varaukset +=1
             boardgame.loan_date = datetime.now()
@@ -244,6 +248,18 @@ def created_games(request, gamer_id):
         if authentication(request.session.get('user')) == False:
             return redirect('board_games:error')
         else:
+            if request.method == 'POST':
+                pelaaja_form = BoardgamerForm(request.POST)
+                if pelaaja_form.is_valid():
+                    pelaaja = pelaaja_form.save(commit=False)
+                    boardgamer = Boardgamer.objects.get(id=request.session['user'])
+                    boardgamer.nimi = pelaaja.nimi
+                    boardgamer.bio = pelaaja.bio
+                    boardgamer.puh = pelaaja.puh
+                    boardgamer.save()
+                    
+                    return redirect('board_games:created_games', boardgamer.id)
+
             boardgames = []
             gamer = Boardgamer.objects.get(id=gamer_id)
             for i in Boardgame.objects.all():
@@ -254,6 +270,27 @@ def created_games(request, gamer_id):
             user = dict.get('user')
             dict = {'boardgames':boardgames, 'boardgamer':boardgamer, 'user':user}
             return render(request, "board_games/created_games.html", dict)
-
+def edit_profile(request):
+    if 'user' in request.session:
+        if authentication(request.session.get('user')) == False:
+            return redirect('board_games:error')
+        else:
+            dict = user_object(request.session.get('user'))
+            boardgamer = dict.get('user_object')
+            user = dict.get('user')
+            form = BoardgamerForm(initial={'nimi':boardgamer.nimi, 'bio':boardgamer.bio, 'puh':boardgamer.puh})
+            dict =  {'form':form, 'boardgamer':boardgamer, 'user':user}
+            return render(request, "board_games/edit_profile.html", dict)
+def loaner(request, loaner_id):
+    if 'user' in request.session:
+        if authentication(request.session.get('user')) == False:
+            return redirect('board_games:error')
+        else:
+            loaner = Boardgamer.objects.get(id=loaner_id)
+            dict = user_object(request.session.get('user'))
+            boardgamer = dict.get('user_object')
+            user = dict.get('user')
+            dict = {'loaner':loaner, 'boardgamer':boardgamer, 'user':user}
+            return render(request, "board_games/loaner.html", dict)
 
 
