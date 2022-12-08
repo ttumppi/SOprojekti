@@ -1,0 +1,33 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'stylesheet.css' %}">
+
+<h1> Boardgame loan service</h1>
+{% if user == True %}
+    <nav class="navbar">
+        <ul>
+            <h3>
+            <li><a href="{% url 'board_games:homepage' %}">Homepage</a></li>
+            <li><a href="{% url 'board_games:boardgames' %}">Boardgames</a></li>
+            <li><a href="{% url 'board_games:log_out' %}">Log out</a></li>
+            <li><a href="{% url 'board_games:loans' %}">Loaned games</a> Hei, <a href="{% url 'board_games:created_games' boardgamer.id %}">{{ boardgamer.nimi }} </a></li>
+            </h3>
+        </ul>
+    </nav>
+{% else %}
+    <nav class="navbar">
+        <ul>
+            <h3>
+            <li><a href="{% url 'board_games:homepage' %}">Homepage</a></li>
+            <li><a href="{% url 'board_games:register' %}">Register</a></li>
+            <li><a href="{% url 'board_games:log_in' %}">Log in</a></li>
+            </h3>
+        </ul>
+    </nav>
+{% endif %} 
+
+
+{% block content %}
+<p> This is the home of loaning boardgames. </p>
+{% endblock content %}
+

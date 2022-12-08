@@ -1,0 +1,28 @@
+{% extends 'board_games/homepage.html' %}
+
+{% block content %}
+<ul>
+    <h4> Pelin nimi:</h4>
+    <li> {{ boardgame }} </li>
+    <h4> Selitys:</h4>
+    {{ boardgame.selitys }}
+    <h4> Luontipvm:</h4>
+    {{ boardgame.date }}
+</ul>
+
+<h4> Loaned at : </h4>
+{% if is_loaned == False %}
+    <form action="{% url 'board_games:boardgame' boardgame.id %}" method='post'>
+        {% csrf_token %}
+        <button name="submit">Loan</button>
+    </form>
+
+{% else %}
+    {{ boardgame.loan_date|date:'M d, Y H:i' }}
+    <p> This game is currently being loaned by: </p>
+    <a href="{% url 'board_games:loaner' boardgame.boardgamer.id %}">{{ boardgame.boardgamer }}</a> 
+{% endif %}
+<h4> Last edited : </h4>
+{{ boardgame.edit_date|date:'M d, Y H:i' }}
+
+{% endblock content %}
